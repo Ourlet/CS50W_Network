@@ -4,7 +4,15 @@
 </div>
 
 <div class="posts">
-  {% for post in posts %}
+  {% if user.is_authenticated %}
+  <h3>New Post</h3>
+  <br />
+  <form action="{% url 'post' %}" method="POST">
+    {% csrf_token %} {{ post }} <br /><br />
+    <input type="submit" value="Add your post" />
+  </form>
+
+  {% else %} {% endif %} {% for post in posts %}
   <div class="post">
     <p>{{ post.poster }}</p>
     <p>{{ post.content }}</p>
