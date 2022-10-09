@@ -12,8 +12,8 @@ class Post(models.Model):
     poster = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="poster")
     content = models.TextField()
-    creation_date = models.DateField(auto_now=False, auto_now_add=True)
-    modification_date = models.DateField(auto_now=False, auto_now_add=True)
+    creation_date = models.DateTimeField(auto_now=False, auto_now_add=True)
+    modification_date = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
         return f"{self.id} : {self.content} writen by {self.poster} on {self.creation_date}"
@@ -24,7 +24,7 @@ class Like(models.Model):
         User, on_delete=models.CASCADE, related_name="liker")
     liked = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="liked")
-    like_date = models.DateField(auto_now=False, auto_now_add=True)
+    like_date = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
         return f"{self.id} : {self.liked} liked by {self.liker}"
