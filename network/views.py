@@ -10,7 +10,7 @@ from .forms import createPostForm
 
 def index(request):
     return render(request, "network/index.html", {
-        "posts": Post.objects.all(),
+        "posts": Post.objects.order_by('-creation_date').all(),
         "post": createPostForm()
     })
 
