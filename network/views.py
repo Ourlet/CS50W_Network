@@ -79,9 +79,9 @@ def create_post(request):
     return HttpResponseRedirect(reverse("index"))
 
 
-def poster_details(request, user):
+def poster_details(request, poster):
 
-    poster = get_object_or_404(User, username=user)
+    poster = get_object_or_404(User, username=poster)
     follower = Follower.objects.filter(followed=poster).all().count()
     followed = Follower.objects.filter(follower=poster).all().count()
 
