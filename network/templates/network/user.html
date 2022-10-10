@@ -12,5 +12,19 @@
     <li>Following: {{ followed }}</li>
   </ul>
 
+  <div class="follow-button">
+    <button class="btn btn-outline-primary">Follow</button>
+  </div>
+
+  <div class="posts">
+    {% for post in posts %}
+    <div class="post">
+      <p>{{ post.poster }}</p>
+      <p>{{ post.content }}</p>
+      <p>{{ post.creation_date}}</p>
+    </div>
+    {% endfor %}
+  </div>
+
   {% endblock %}
 </div>

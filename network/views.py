@@ -88,5 +88,6 @@ def poster_details(request, user):
     return render(request, "network/user.html", {
         "user": poster,
         "follower": follower,
-        "followed": followed
+        "followed": followed,
+        "posts": Post.objects.order_by('-creation_date').filter(poster=poster)
     })
