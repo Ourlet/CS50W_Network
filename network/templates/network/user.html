@@ -1,0 +1,16 @@
+{% extends "network/layout.html" %} {% block body %}
+<div class="user">
+  <h2>user : {{ user.username}}</h2>
+</div>
+
+<div class="user_details">
+  <ul>
+    <li>Name: {{ user.first_name}} {{ user.last_name }}</li>
+    <li>Accounte created : {{ user.date_joined }}</li>
+
+    <li>Number of followers: {{ follower }}</li>
+    <li>Following: {{ followed }}</li>
+  </ul>
+
+  {% endblock %}
+</div>

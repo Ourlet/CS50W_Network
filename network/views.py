@@ -1,10 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
-from .models import Post, User
+from .models import Follower, Post, User
 from .forms import createPostForm
 
 
@@ -77,3 +77,16 @@ def create_post(request):
             new_post = Post(poster=poster, content=post)
             new_post.save()
     return HttpResponseRedirect(reverse("index"))
+
+
+def poster_details(request, user):
+
+    poster = get_object_or_404(User, username=user)
+    follower = Follower.objects.filter(followed=poster).all().count()
+    followed = Follower.objects.filter(follower=poster).all().count()
+
+    return render(request, "network/user.html", {
+        "user": poster,
+        "follower": follower,
+        "followed": followed
+    })
