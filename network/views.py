@@ -86,7 +86,7 @@ def poster_details(request, poster):
     followed = Follower.objects.filter(follower=poster).all().count()
 
     return render(request, "network/user.html", {
-        "user": poster,
+        "poster": poster,
         "follower": follower,
         "followed": followed,
         "posts": Post.objects.order_by('-creation_date').filter(poster=poster)
