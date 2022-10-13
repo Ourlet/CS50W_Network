@@ -33,7 +33,7 @@ class PostTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["posts"].count(), 3)
 
-    def test_valid_poster_page(self):
+    def test_valid_profile_page(self):
         p = User.objects.get(username="u1")
 
         c = Client()
@@ -42,7 +42,7 @@ class PostTestCase(TestCase):
 
     # def test_invalid_poster_page(self):
 
-    def test_poster_page_follower(self):
+    def test_profile_page_follower(self):
         p = User.objects.get(username="u2")
 
         c = Client()
@@ -50,7 +50,7 @@ class PostTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["follower"], 1)
 
-    def test_poster_page_following(self):
+    def test_profile_page_following(self):
         p = User.objects.get(username="u1")
 
         c = Client()

@@ -3,18 +3,16 @@
   <h2>user : {{ poster.username}}</h2>
 </div>
 
-<div class="user_details">
+<div class="profile_details">
   <ul>
-    <li>Name: {{ poster.first_name}} {{ poster.last_name }}</li>
-    <li>Accounte created : {{ user.date_joined }}</li>
+    <li>Name: {{ profile.first_name}} {{ profile.last_name }}</li>
+    <li>Account created : {{ profile.date_joined }}</li>
 
     <li>Number of followers: {{ follower }}</li>
     <li>Following: {{ followed }}</li>
   </ul>
 
-  <div class="follow-button">
-    <button class="btn btn-outline-primary">Follow</button>
-  </div>
+  <div id="follow-button"></div>
 
   <div class="posts">
     {% for post in posts %}

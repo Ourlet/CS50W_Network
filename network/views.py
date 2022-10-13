@@ -79,15 +79,15 @@ def create_post(request):
     return HttpResponseRedirect(reverse("index"))
 
 
-def poster_details(request, poster):
+def profile_details(request, profile):
 
-    poster = get_object_or_404(User, username=poster)
-    follower = Follower.objects.filter(followed=poster).all().count()
-    followed = Follower.objects.filter(follower=poster).all().count()
+    p = get_object_or_404(User, username=profile)
+    follower = Follower.objects.filter(followed=p).all().count()
+    followed = Follower.objects.filter(follower=p).all().count()
 
-    return render(request, "network/user.html", {
-        "poster": poster,
+    return render(request, "network/profile.html", {
+        "profile": p,
         "follower": follower,
         "followed": followed,
-        "posts": Post.objects.order_by('-creation_date').filter(poster=poster)
+        "posts": Post.objects.order_by('-creation_date').filter(poster=p)
     })
