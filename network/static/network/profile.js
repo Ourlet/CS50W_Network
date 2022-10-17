@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-  function follow_profile(profile_id) {
+  function follow_profile(profile_id, user_id) {
     // follow a profile by  email by changing status Archive = True
-    fetch(`/emails/${email_id}`, {
+    fetch(`/post/${profile_id}`, {
       method: "PUT",
       body: JSON.stringify({
         archived: true,

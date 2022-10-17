@@ -12,7 +12,22 @@
     <li>Following: {{ followed }}</li>
   </ul>
 
-  <div id="follow-button"></div>
+  <div id="follow-button">
+    <form action="{% url 'follow' profile %}" method="POST">
+      {% csrf_token %}
+      <button name="add" class="btn btn-primary" placeholder="Follow">
+        Follow
+      </button>
+      <input type="hidden" name="viewer" value="{{ user.username }}" />
+    </form>
+    <form action="{% url 'unfollow' profile %}" method="POST">
+      {% csrf_token %}
+      <button name="add" class="btn btn-primary" placeholder="Unfollow">
+        Unfollow
+      </button>
+      <input type="hidden" name="viewer" value="{{ user.username }}" />
+    </form>
+  </div>
 
   <div class="posts">
     {% for post in posts %}
