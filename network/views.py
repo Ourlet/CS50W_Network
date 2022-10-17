@@ -87,6 +87,7 @@ def profile_details(request, profile):
     viewer = request.user
 
     try:
+        # Get data from User and Follower DB
         p = User.objects.get(username=profile)
         follower = Follower.objects.filter(followed=p).all().count()
         followed = Follower.objects.filter(follower=p).all().count()
