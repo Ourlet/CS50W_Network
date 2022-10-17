@@ -105,7 +105,8 @@ def profile_details(request, profile):
             "followed": followed,
             "posts": Post.objects.order_by('-creation_date').filter(poster=p),
             "isFollowing": Follower.objects.filter(
-                follower=viewer, followed=p).exists()
+                follower=viewer, followed=p).exists(),
+            "isOwnProfile": viewer == p
         })
 
 
