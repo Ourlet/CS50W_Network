@@ -82,6 +82,10 @@ def create_post(request):
 
 
 def profile_details(request, profile):
+
+    # Identify who is consulting the profile
+    viewer = request.user
+
     try:
         p = User.objects.get(username=profile)
         follower = Follower.objects.filter(followed=p).all().count()
@@ -99,7 +103,9 @@ def profile_details(request, profile):
             "profile": p,
             "follower": follower,
             "followed": followed,
-            "posts": Post.objects.order_by('-creation_date').filter(poster=p)
+            "posts": Post.objects.order_by('-creation_date').filter(poster=p),
+            "isFollowing": Follower.objects.filter(
+                follower=viewer, followed=p).exists()
         })
 
 
