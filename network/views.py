@@ -139,7 +139,9 @@ def add_follower(request, profile):
         follower = Follower(follower=viewer, followed=profileViewed)
         follower.save()
 
-    return HttpResponseRedirect(reverse("profile", args=(profile,)))
+    # return HttpResponseRedirect(reverse("profile", args=(profile,)))
+
+    return JsonResponse({"Following": "Follower added successfully."}, status=201)
 
 
 def remove_follower(request, profile):
@@ -169,4 +171,4 @@ def remove_follower(request, profile):
         Follower.objects.filter(
             follower=viewer, followed=profileViewed).delete()
 
-    return HttpResponseRedirect(reverse("profile", args=(profile,)))
+    return JsonResponse({"Following": "Follower removed successfully."}, status=201)

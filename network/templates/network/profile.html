@@ -1,4 +1,4 @@
-{% extends "network/layout.html" %} {% block body %}
+{% extends "network/layout.html" %} {% load static %}{% block body %}
 <div class="user">
   <h2>user : {{ poster.username}}</h2>
 </div>
@@ -13,6 +13,8 @@
     <li>Is it currently following : {{ isFollowing}}</li>
     <li>Is it own profile : {{ isOwnProfile}}</li>
   </ul>
+
+  <button id="followingButtons">click</button>
 
   <div id="follow-button">
     <form action="{% url 'follow' profile %}" method="POST">
@@ -40,6 +42,7 @@
     </div>
     {% endfor %}
   </div>
-
-  {% endblock %}
 </div>
+{% endblock %} {% block script %}
+<script src="{% static 'network/profile.js' %}"></script>
+{% endblock %}
