@@ -5,6 +5,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.core.serializers import serialize
+
 
 from .models import Follower, Post, User
 from .forms import createPostForm
@@ -81,34 +85,43 @@ def create_post(request):
     return HttpResponseRedirect(reverse("index"))
 
 
-def profile_details(request, profile):
+@csrf_exempt
+@login_required
+def profile(request, profile):
 
     # Identify who is consulting the profile
     viewer = request.user
 
     try:
         # Get data from User and Follower DB
-        p = User.objects.get(username=profile)
-        follower = Follower.objects.filter(followed=p).all().count()
-        followed = Follower.objects.filter(follower=p).all().count()
+        profile = User.objects.get(username=profile)
+        follower = Follower.objects.filter(followed=profile).all().count()
+        followed = Follower.objects.filter(follower=profile).all().count()
+        profilePosts = Post.objects.order_by(
+            '-creation_date').filter(poster=profile)
+        serialized_profilePosts = serialize("json", profilePosts)
+        serialized_profilePosts = json.loads(serialized_profilePosts)
+        following = Follower.objects.filter(
+            follower=viewer, followed=profile).exists()
+        ownProfile = viewer == profile
 
-    except User.DoesNotExist:
-        return render(request, "network/error_handling.html",
-                      {
-                          "code": 404,
-                          "message": "Profile doesn't exist"
-                      })
-
-    else:
-        return render(request, "network/profile.html", {
-            "profile": p,
+        profile_data = dict({
+            "username": profile.username,
+            "firstname": profile.first_name,
+            "lastname": profile.last_name,
+            "accountCreated": profile.date_joined,
             "follower": follower,
             "followed": followed,
-            "posts": Post.objects.order_by('-creation_date').filter(poster=p),
-            "isFollowing": Follower.objects.filter(
-                follower=viewer, followed=p).exists(),
-            "isOwnProfile": viewer == p
+            "posts": serialized_profilePosts,
+            "isFollowing": following,
+            "isOwnProfile": ownProfile
         })
+
+    except User.DoesNotExist:
+        return JsonResponse({"profile": "Profile doesn't exist."}, status=404)
+
+    if request.method == "GET":
+        return JsonResponse(profile_data, safe=False, status=200)
 
 
 def add_follower(request, profile):
