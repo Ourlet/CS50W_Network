@@ -12,11 +12,7 @@
       {% csrf_token %} {{ post }} <br /><br />
       <input type="submit" value="Add your post" />
     </form>
-
-    <button id="followingButtons">Click</button>
-
-    
-
+  
     {% else %} {% endif %} {% for post in posts %}
     <div class="post">
       <p>{{ post.poster }}</p>
