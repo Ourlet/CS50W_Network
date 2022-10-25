@@ -15,6 +15,8 @@
 
     <button id="followingButtons">Click</button>
 
+    
+
     {% else %} {% endif %} {% for post in posts %}
     <div class="post">
       <p>{{ post.poster }}</p>
@@ -25,22 +27,17 @@
   </div>
 </div>
 
-<div id="profile-view">
-  <div class="user">
-    <h2 id="profile">user : {{ profile.username}}</h2>
+  <div id="profile-view">
   </div>
-
-  <div id="profile-details" class="profile">
-    <ul>
-      <li>Name: {{ profile.first_name}} {{ profile.last_name }}</li>
-      <li>Account created : {{ profile.date_joined }}</li>
-
-      <li>Number of followers: {{ follower }}</li>
-      <li>Following: {{ followed }}</li>
-      <li>Is it currently following : {{ isFollowing}}</li>
-      <li>Is it own profile : {{ isOwnProfile}}</li>
-    </ul>
+  
+  <div id="profile-follow">
+  
   </div>
+  
+  <div id="profile-posts">
+  
+  </div>  
+
 
   {% comment %}
   <div id="follow-buttons">
@@ -64,16 +61,6 @@
       </form>
     </div>
     {% endcomment %}
-
-    <div id="profile-post" class="posts">
-      {% for post in posts %}
-      <div class="post">
-        <p>{{ post.poster }}</p>
-        <p>{{ post.content }}</p>
-        <p>{{ post.creation_date}}</p>
-      </div>
-      {% endfor %}
-    </div>
   </div>
   {% endblock %}
 </div>

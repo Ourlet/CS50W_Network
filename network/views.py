@@ -101,6 +101,7 @@ def profile(request, profile):
             '-creation_date').filter(poster=profile)
         serialized_profilePosts = serialize("json", profilePosts)
         serialized_profilePosts = json.loads(serialized_profilePosts)
+        print(serialized_profilePosts)
         following = Follower.objects.filter(
             follower=viewer, followed=profile).exists()
         ownProfile = viewer == profile
@@ -122,12 +123,6 @@ def profile(request, profile):
 
     if request.method == "GET":
         return JsonResponse(profile_data, safe=False, status=200)
-
-
-def add_follower(request, profile):
-
-    # Identify who is consulting the profile
-    viewer = request.user
 
     if request.method == "POST":
 
@@ -154,15 +149,9 @@ def add_follower(request, profile):
 
     # return HttpResponseRedirect(reverse("profile", args=(profile,)))
 
-    return JsonResponse({"Following": "Follower added successfully."}, status=201)
+        return JsonResponse({"Following": "Follower added successfully."}, status=201)
 
-
-def remove_follower(request, profile):
-
-    # Identify who is consulting the profile
-    viewer = request.user
-
-    if request.method == "POST":
+    if request.method == "DELETE":
         # Get the data of the profile visited
         profileViewed = get_object_or_404(User, username=profile)
 
@@ -184,4 +173,4 @@ def remove_follower(request, profile):
         Follower.objects.filter(
             follower=viewer, followed=profileViewed).delete()
 
-    return JsonResponse({"Following": "Follower removed successfully."}, status=201)
+        return JsonResponse({"Following": "Follower removed successfully."}, status=201)
