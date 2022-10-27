@@ -11,7 +11,7 @@ from django.core.serializers import serialize
 
 
 from .models import Follower, Post, User
-from .forms import createPostForm
+from forms import createPostForm
 
 
 def index(request):
@@ -89,7 +89,7 @@ def create_post(request):
 @login_required
 def profile(request, profile):
 
-    poster = get_object_or_404(User, username=profile)
+    poster = User.objects.get(username=profile)
 
     return render(request, "network/profile.html", {
         "poster": poster,
@@ -120,7 +120,10 @@ def update(request, profile):
             ownProfile = viewer == profile
 
         except User.DoesNotExist:
-            return JsonResponse({"message": "Profile doesn't exist."}, status=404)
+            return render(request, "network/error_handling.html", {
+                "code": 404,
+                "message": "Profile doesn't exist."
+            })
 
         return JsonResponse({
             "username": profile.username,
@@ -141,11 +144,14 @@ def update(request, profile):
 
         # Avoid users to follow themselves
         if profileViewed == viewer:
-            return JsonResponse({"message": "User can't follow itself."}, status=400)
+            JsonResponse({"message": "User can't follow itself."}, status=400)
 
         # Prevent user to follow multiple times the same profile
         if Follower.objects.filter(follower=viewer, followed=profileViewed):
-            return JsonResponse({"message": "Profile already followed."}, status=400)
+            return render(request, "network/error_handling.html", {
+                "code": 400,
+                "message": "Profile already followed"
+            })
 
         # Save the Follower and Followed in the DB
         follower = Follower(follower=viewer, followed=profileViewed)
@@ -161,11 +167,17 @@ def update(request, profile):
 
         # Avoid users to unfollow themselves
         if profileViewed == viewer:
-            return JsonResponse({"message": "User can't unfollow itself."}, status=400)
+            return render(request, "network/error_handling.html", {
+                "code": 400,
+                "message": "User can't unfollow itself."
+            })
 
         # Prevent user to unfollow multiple times the same profile
         if not Follower.objects.filter(follower=viewer, followed=profileViewed):
-            return JsonResponse({"message": "Profile not followed."}, status=400)
+            return render(request, "network/error_handling.html", {
+                "code": 400,
+                "message": "Profile not followed"
+            })
 
         # Delete Follower and Followed in the DB
         Follower.objects.filter(

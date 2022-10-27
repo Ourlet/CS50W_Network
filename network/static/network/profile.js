@@ -1,17 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelector("#profile-view").style.display = "none";
-  document.querySelector("#all-post").style.display = "block";
-  document
-    .querySelector("#followingButtons")
-    .addEventListener("click", () => display_profile("1234"));
+  display_profile(document.querySelector("#poster").innerHTML);
 });
 
 function display_profile(profile) {
-  document.querySelector("#profile-view").style.display = "block";
-  document.querySelector("#all-post").style.display = "none";
+  document.querySelector("#profile-view").innerHTML = "";
+  document.querySelector("#profile-follow").innerHTML = "";
+  document.querySelector("#profile-posts").innerHTML = "";
 
   // Call the API to get the details of the profile
-  fetch(`/profile/${profile}`)
+  fetch(`/update/${profile}`)
     .then((response) => response.json())
     .then((profile) => {
       // Create the container to show the email details
@@ -21,15 +18,11 @@ function display_profile(profile) {
     });
 }
 
-function profile_details(profile) {
+async function profile_details(profile) {
   const element = document.createElement("div");
 
   // Add some HTML in the container to display the information of a specific email
-  element.innerHTML = `<div class="user">
-      <h2 id="profile">user : ${profile.username}</h2>
-    </div>
-
-    <div id="profile-details" class="profile">
+  element.innerHTML = `<div id="profile-details" class="profile">
       <ul>
         <li>Name: ${profile.firstname} ${profile.lastname}</li>
         <li>Account created : ${profile.accountCreated}</li>
@@ -62,21 +55,21 @@ function profile_posts(profile) {
 }
 
 function follow_profile(profile) {
-  fetch(`/profile/${profile.username}`, {
+  fetch(`/update/${profile.username}`, {
     method: "POST",
   }).then((result) => {
-    console.log(result);
     display_profile(profile.username);
+    console.log(result);
   });
   return false;
 }
 
 function unfollow_profile(profile) {
-  fetch(`/profile/${profile.username}`, {
+  fetch(`/update/${profile.username}`, {
     method: "DELETE",
   }).then((result) => {
-    console.log(result);
     display_profile(profile.username);
+    console.log(result);
   });
   return false;
 }
@@ -90,17 +83,21 @@ function check_follow(profile) {
 }
 
 function follow_actions(profile) {
-  const element = document.createElement("div");
-  element.innerHTML = `<div class="action-buttons">
-  <button id="followButtons">${
-    profile.isFollowing ? "Unfollow" : "Follow"
-  }</button>  </div>`;
+  if (profile.isOwnProfile) {
+    document.querySelector("#profile-follow").innerHTML = "";
+  } else {
+    const element = document.createElement("div");
+    element.innerHTML = `<div class="action-buttons">
+    <button id="followButtons">${
+      profile.isFollowing ? "Unfollow" : "Follow"
+    }</button>  </div>`;
 
-  document.querySelector("#profile-follow").append(element);
+    document.querySelector("#profile-follow").append(element);
 
-  document
-    .querySelector("#followButtons")
-    .addEventListener("click", function () {
-      check_follow(profile);
-    });
+    document
+      .querySelector("#followButtons")
+      .addEventListener("click", function () {
+        check_follow(profile);
+      });
+  }
 }
