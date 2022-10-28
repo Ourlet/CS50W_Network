@@ -42,11 +42,11 @@ function profile_posts(profile) {
   profile.posts.forEach(function (post) {
     const element = document.createElement("div");
 
-    element.innerHTML = `<div class="posts">
-     <div class="post">
-      <p>${profile.username}</p>
-      <p>${post.fields.content}</p>
-      <p>${post.fields.creation_date}</p>
+    element.innerHTML = `<div class="posts card">
+     <div class="post card-body">
+      <p class="card-text">${profile.username}</p>
+      <p class="card-text">${post.fields.content}</p>
+      <p class="card-text">${post.fields.creation_date}</p>
      </div>
      </div>`;
 
@@ -88,7 +88,7 @@ function follow_actions(profile) {
   } else {
     const element = document.createElement("div");
     element.innerHTML = `<div class="action-buttons">
-    <button id="followButtons">${
+    <button class="btn btn-primary" id="followButtons">${
       profile.isFollowing ? "Unfollow" : "Follow"
     }</button>  </div>`;
 

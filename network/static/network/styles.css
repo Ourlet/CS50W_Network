@@ -1,0 +1,33 @@
+* { box-sizing: border-box; }
+
+body {
+    padding: 10px;
+}
+
+#all-post{
+    padding: 20px;
+}
+
+#user {
+    padding: 20px;
+}
+
+.post-form {
+    width: 100%;
+}
+
+textarea {
+    width: 100%;
+    border-color: silver;
+    border-radius: 5px;
+}
+
+.card {
+    margin: 10px 0;
+}
+
+a.post-poster {
+    color: black;
+    font-weight: 500;
+
+}

@@ -9,3 +9,6 @@ class createPostForm(ModelForm):
         fields = [
             'content'
         ]
+        labels = {
+            "content": ""
+        }
