@@ -13,5 +13,6 @@ urlpatterns = [
 
     # API Routes
     path("update/<str:profile>",
-         views.update, name="update_profile"),
+         views.update_profile, name="update_profile"),
+    path("update/<int:post>", views.update_post, name="update_post")
 ]

@@ -52,3 +52,11 @@ a.post-poster {
     padding-left: 0.6em;
     border-radius: 10rem;
 }
+
+.pagination-actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: baseline;
+    gap:20px;
+}

@@ -96,10 +96,17 @@ def create_post(request):
 @login_required
 def profile(request, profile):
 
-    poster = get_object_or_404(User, username=profile)
+    poster = User.objects.get(username=profile)
+    profile_posts = Post.objects.order_by(
+        '-creation_date').filter(poster=poster)
+    paginator = Paginator(profile_posts, 3)  # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "network/profile.html", {
         "poster": poster,
+        'page_obj': page_obj
     })
 
 

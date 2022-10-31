@@ -14,7 +14,6 @@ function display_profile(profile) {
       // Create the container to show the email details
       profile_details(profile);
       follow_actions(profile);
-      profile_posts(profile);
     });
 }
 
@@ -40,22 +39,6 @@ async function profile_details(profile) {
 
   // Add the new HTML to the div email-details
   document.querySelector("#profile-view").append(element);
-}
-
-function profile_posts(profile) {
-  profile.posts.forEach(function (post) {
-    const element = document.createElement("div");
-
-    element.innerHTML = `<div class="posts card">
-     <div class="post card-body">
-      <p class="card-text">${profile.username}</p>
-      <p class="card-text">${post.fields.content}</p>
-      <p class="card-text">${post.fields.creation_date}</p>
-     </div>
-     </div>`;
-
-    document.querySelector("#profile-posts").append(element);
-  });
 }
 
 function follow_profile(profile) {

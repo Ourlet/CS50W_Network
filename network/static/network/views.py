@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
+from django.core.paginator import Paginator
 
 
 from .models import Follower, Post, User
@@ -90,15 +91,22 @@ def create_post(request):
 def profile(request, profile):
 
     poster = User.objects.get(username=profile)
+    profile_posts = Post.objects.order_by(
+        '-creation_date').filter(poster=profile)
+    paginator = Paginator(profile_posts, 1)  # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "network/profile.html", {
         "poster": poster,
+        'page_obj': page_obj
     })
 
 
 @csrf_exempt
 @login_required
-def update(request, profile):
+def update_profile(request, profile):
 
     # Identify who is consulting the profile
     viewer = request.user
@@ -184,3 +192,5 @@ def update(request, profile):
             follower=viewer, followed=profileViewed).delete()
 
         return JsonResponse({"Following": "Follower removed successfully."}, status=201)
+
+    # def update_post():

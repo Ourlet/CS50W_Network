@@ -12,6 +12,44 @@
   <!-- List of all posts of the profile -->
   <div id="profile-posts"></div>
 
+  <div id="section posts">
+    <!-- Section to display all recent posts -->
+    {% for post in page_obj %}
+    <div class="post card">
+      <div class="card-body">
+        <p>{{ post.poster }}</p>
+        <p class="post-body card-text">{{ post.content }}</p>
+        <p class="post-creation-date card-text">
+          <small class="text-muted">{{ post.creation_date}}</small>
+        </p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="pagination-actions">
+    <span class="current pagination-page">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination pagination-buttons">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+            >previous</a
+          >
+        </li>
+        {% endif %} {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}"
+            >next</a
+          >
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+
   {% endblock %} {% block script %}
   <script src="{% static 'network/profile.js' %}"></script>
   {% endblock %}
