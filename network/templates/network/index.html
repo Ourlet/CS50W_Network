@@ -1,9 +1,11 @@
 {% extends "network/layout.html" %}{% load static %} {% block body %}
 <div id="all-post">
+  <!-- Title of the Index page -->
   <div class="header">
     <h1>All Posts</h1>
   </div>
 
+  <!-- Section to display form to create new post if viewer is authenticated -->
   <div class="posts">
     {% if user.is_authenticated %}
     <div class="card">
@@ -12,6 +14,7 @@
           <h3>New Post</h3>
         </div>
 
+        <!-- Form linked to BE to save new post -->
         <form action="{% url 'post' %}" method="POST" class="card-title">
           {% csrf_token %}
           <div class="post-form">{{ post }}</div>
@@ -22,6 +25,7 @@
       </div>
     </div>
 
+    <!-- Section to display all recent posts -->
     {% else %} {% endif %} {% for post in posts %}
     <div class="post card">
       <div class="card-body">
