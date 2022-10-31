@@ -31,3 +31,24 @@ a.post-poster {
     font-weight: 500;
 
 }
+
+.follow-data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.follow-details {
+    display: flex;
+    flex-grow: 1;
+}
+
+.badge{
+    vertical-align: baseline;
+    font-size: 100%;
+    padding: 0%;
+    line-height: normal;
+    padding-right: 0.6em;
+    padding-left: 0.6em;
+    border-radius: 10rem;
+}

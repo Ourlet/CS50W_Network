@@ -22,16 +22,20 @@ async function profile_details(profile) {
   const element = document.createElement("div");
 
   // Add some HTML in the container to display the information of a specific email
-  element.innerHTML = `<div id="profile-details" class="profile">
-      <ul>
-        <li>Name: ${profile.firstname} ${profile.lastname}</li>
-        <li>Account created : ${profile.accountCreated}</li>
-
-        <li>Number of followers: ${profile.follower}</li>
-        <li>Following: ${profile.followed}</li>
-        <li>Is it currently following : ${profile.isFollowing}</li>
-        <li>Is it own profile : ${profile.isOwnProfile}</li>
-      </ul>
+  element.innerHTML = `<div id="profile-details" class="profile card">
+      <div class="card-body">
+        <p class="card-text">Name: ${profile.firstname} ${profile.lastname}</p>
+        <p>Account created : ${profile.accountCreated}</p>
+        <div class="follow-data">
+          <div class="follow-details">
+            Number of followers: <span class="badge badge-primary badge-pill">${profile.follower}</span>
+          </div>
+          <div class="follow-details">
+            Following: <span class="badge badge-primary badge-pill">${profile.followed}</span>
+          </div>
+        </div>
+        
+      </div>
     </div>`;
 
   // Add the new HTML to the div email-details
