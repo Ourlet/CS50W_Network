@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
+from django.core.paginator import Paginator
 
 
 from .models import Follower, Post, User
@@ -15,9 +16,15 @@ from .forms import createPostForm
 
 
 def index(request):
+    posts = Post.objects.order_by('-creation_date').all()
+    paginator = Paginator(posts, 3)  # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/index.html", {
-        "posts": Post.objects.order_by('-creation_date').all(),
-        "post": createPostForm()
+        "post": createPostForm(),
+        'page_obj': page_obj
     })
 
 

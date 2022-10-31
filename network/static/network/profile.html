@@ -1,15 +1,13 @@
 {% extends "network/layout.html" %}{% load static %} {% block body %}
 
-<!-- Section including title of the page and the details of the profile -->
   <div class="user card">
     <h2 id="profile" class="card-title">user : <span id="poster">{{poster}}</span></h2></div>
 
     <div id="profile-view"></div>
 
-<!-- Section to show follow/unfollow buttons depending on the logic dealt by BE -->
+
   <div id="profile-follow"></div>
 
-<!-- List of all posts of the profile -->
   <div id="profile-posts"></div>
 
   {% endblock %} {% block script %}
