@@ -112,7 +112,7 @@ def profile(request, profile):
 
 @csrf_exempt
 @login_required
-def update(request, profile):
+def update_profile(request, profile):
 
     # Identify who is consulting the profile
     viewer = request.user
