@@ -8,7 +8,7 @@ function display_profile(profile) {
   document.querySelector("#profile-posts").innerHTML = "";
 
   // Call the API to get the details of the profile
-  fetch(`/update/${profile}`)
+  fetch(`/update_profile/${profile}`)
     .then((response) => response.json())
     .then((profile) => {
       // Create the container to show the email details
@@ -42,7 +42,7 @@ async function profile_details(profile) {
 }
 
 function follow_profile(profile) {
-  fetch(`/update/${profile.username}`, {
+  fetch(`/update_profile/${profile.username}`, {
     method: "POST",
   }).then((result) => {
     display_profile(profile.username);
@@ -52,7 +52,7 @@ function follow_profile(profile) {
 }
 
 function unfollow_profile(profile) {
-  fetch(`/update/${profile.username}`, {
+  fetch(`/update_profile/${profile.username}`, {
     method: "DELETE",
   }).then((result) => {
     display_profile(profile.username);

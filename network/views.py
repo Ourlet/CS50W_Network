@@ -11,7 +11,7 @@ from django.core.serializers import serialize
 from django.core.paginator import Paginator
 
 
-from .models import Follower, Post, User
+from .models import Follower, Post, User, Like
 from .forms import createPostForm
 
 
@@ -165,8 +165,6 @@ def update_profile(request, profile):
         follower = Follower(follower=viewer, followed=profileViewed)
         follower.save()
 
-    # return HttpResponseRedirect(reverse("profile", args=(profile,)))
-
         return JsonResponse({"Following": "Follower added successfully."}, status=201)
 
     if request.method == "DELETE":
@@ -186,3 +184,44 @@ def update_profile(request, profile):
             follower=viewer, followed=profileViewed).delete()
 
         return JsonResponse({"Following": "Follower removed successfully."}, status=201)
+
+
+@csrf_exempt
+@login_required
+def update_post(request, post_id):
+    viewer = request.user
+    post = get_object_or_404(Post, pk=post_id)
+
+    # Get the data of the post viewer
+
+    if request.method == "POST":
+
+        # Avoid users to follow themselves
+        if post.poster == viewer:
+            return JsonResponse({"message": "User can't like its own post."}, status=400)
+
+        # Prevent user to follow multiple times the same profile
+        if Like.objects.filter(liker=viewer, liked=post):
+            return JsonResponse({"message": "Post already liked."}, status=400)
+
+        # Save the Follower and Followed in the DB
+        like = Like(liker=viewer, liked=post)
+        like.save()
+
+        return JsonResponse({"Like": "User liked the post."}, status=201)
+
+    if request.method == "DELETE":
+
+        # Avoid users to unfollow themselves
+        if post.poster == viewer:
+            return JsonResponse({"message": "User can't unfollow itself."}, status=400)
+
+        # Prevent user to unlike multiple times the same post
+        if not Like.objects.filter(liker=viewer, liked=post):
+            return JsonResponse({"message": "Post already unliked."}, status=400)
+
+        # Delete Follower and Followed in the DB
+        Like.objects.filter(
+            liker=viewer, liked=post).delete()
+
+        return JsonResponse({"Like": "User unliked the post."}, status=201)

@@ -12,7 +12,7 @@ urlpatterns = [
     path("profile/<str:profile>", views.profile, name="profile"),
 
     # API Routes
-    path("update/<str:profile>",
+    path("update_profile/<str:profile>",
          views.update_profile, name="update_profile"),
-    # path("update/<int:post>", views.update_post, name="update_post")
+    path("update_post/<int:post_id>", views.update_post, name="update_post")
 ]
