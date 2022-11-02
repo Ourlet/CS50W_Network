@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
 from django.core.paginator import Paginator
+from django.db.models import Count
 
 
 from .models import Follower, Post, User, Like
@@ -16,7 +17,8 @@ from .forms import createPostForm
 
 
 def index(request):
-    posts = Post.objects.order_by('-creation_date').all()
+    posts = Post.objects.annotate(num_likes=Count(
+        'liked')).order_by('-creation_date').all()
     paginator = Paginator(posts, 3)  # Show 25 contacts per page.
 
     page_number = request.GET.get('page')
@@ -24,7 +26,7 @@ def index(request):
 
     return render(request, "network/index.html", {
         "post": createPostForm(),
-        'page_obj': page_obj
+        'page_obj': page_obj,
     })
 
 
@@ -92,8 +94,8 @@ def create_post(request):
     return HttpResponseRedirect(reverse("index"))
 
 
-@csrf_exempt
-@login_required
+@ csrf_exempt
+@ login_required
 def profile(request, profile):
 
     poster = User.objects.get(username=profile)
@@ -110,8 +112,8 @@ def profile(request, profile):
     })
 
 
-@csrf_exempt
-@login_required
+@ csrf_exempt
+@ login_required
 def update_profile(request, profile):
 
     # Identify who is consulting the profile
@@ -185,9 +187,28 @@ def update_profile(request, profile):
 
         return JsonResponse({"Following": "Follower removed successfully."}, status=201)
 
+# Create a get post API to get all data relative to a post
 
-@csrf_exempt
-@login_required
+
+@ csrf_exempt
+def get_post(request, post_id):
+
+    if request.method == "GET":
+        try:
+            post = Post.objects.filter(pk=post_id)
+            like = Like.objects.filter(liked=post).count()
+
+        except Post.DoesNotExist:
+            return JsonResponse({"message": "Post doesn't exist."}, status=404)
+
+        return JsonResponse({
+            "post": post,
+            "like": like
+        }, safe=False, status=201)
+
+
+@ csrf_exempt
+@ login_required
 def update_post(request, post_id):
     viewer = request.user
     post = get_object_or_404(Post, pk=post_id)

@@ -14,5 +14,6 @@ urlpatterns = [
     # API Routes
     path("update_profile/<str:profile>",
          views.update_profile, name="update_profile"),
-    path("update_post/<int:post_id>", views.update_post, name="update_post")
+    path("update_post/<int:post_id>", views.update_post, name="update_post"),
+    # path("get_like/<int:post_id>", views.get_like, name="like")
 ]

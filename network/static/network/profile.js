@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
 function display_profile(profile) {
   document.querySelector("#profile-view").innerHTML = "";
   document.querySelector("#profile-follow").innerHTML = "";
-  document.querySelector("#profile-posts").innerHTML = "";
 
   // Call the API to get the details of the profile
   fetch(`/update_profile/${profile}`)
