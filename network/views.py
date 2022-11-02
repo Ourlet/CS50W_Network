@@ -99,7 +99,8 @@ def create_post(request):
 def profile(request, profile):
 
     poster = User.objects.get(username=profile)
-    profile_posts = Post.objects.order_by(
+    profile_posts = Post.objects.annotate(num_likes=Count(
+        'liked')).order_by(
         '-creation_date').filter(poster=poster)
     paginator = Paginator(profile_posts, 3)  # Show 25 contacts per page.
 
