@@ -41,7 +41,9 @@
         <p class="post-creation-date card-text">
           <small class="text-muted">{{ post.creation_date}}</small>
         </p>
-        <p>number of like: {{ post.num_likes }}</p>
+        <button type="button" class="btn btn-light">
+          &#129505; {{ post.num_likes }}
+        </button>
       </div>
     </div>
     {% endfor %}
