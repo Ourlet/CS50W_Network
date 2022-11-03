@@ -192,20 +192,22 @@ def update_profile(request, profile):
 
 
 @ csrf_exempt
-def get_post(request, post_id):
+def get_post(request, profile=None):
+    viewer = request.user
 
-    if request.method == "GET":
-        try:
-            post = Post.objects.filter(pk=post_id)
-            like = Like.objects.filter(liked=post).count()
+    if profile is None:
+        posts = Post.objects.all()
 
-        except Post.DoesNotExist:
-            return JsonResponse({"message": "Post doesn't exist."}, status=404)
+    else:
+        poster = User.objects.get(username=profile)
+        posts = Post.objects.filter().filter(poster=poster)
 
-        return JsonResponse({
-            "post": post,
-            "like": like
-        }, safe=False, status=201)
+    serialized_profilePosts = serialize("json", posts)
+    serialized_profilePosts = json.loads(serialized_profilePosts)
+
+    return JsonResponse({
+        "posts": serialized_profilePosts,
+    }, safe=False, status=201)
 
 
 @ csrf_exempt
