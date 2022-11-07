@@ -98,7 +98,7 @@ def create_post(request):
 @ login_required
 def profile(request, profile):
 
-    poster = User.objects.get(username=profile)
+    poster = get_object_or_404(User, username=profile)
     profile_posts = Post.objects.annotate(num_likes=Count(
         'liked')).order_by(
         '-creation_date').filter(poster=poster)
