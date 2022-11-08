@@ -199,11 +199,13 @@ def get_post(request, profile=None):
         posts = Post.objects.all()
 
     else:
-        poster = User.objects.get(username=profile)
-        posts = Post.objects.filter().filter(poster=poster)
+        poster = get_object_or_404(User, username=profile)
+        posts = list(Post.objects.filter(poster=poster))
+        print(posts)
 
     serialized_profilePosts = serialize("json", posts)
     serialized_profilePosts = json.loads(serialized_profilePosts)
+    print(serialized_profilePosts)
 
     return JsonResponse({
         "posts": serialized_profilePosts,

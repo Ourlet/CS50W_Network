@@ -13,6 +13,7 @@ function display_profile(profile) {
       // Create the container to show the email details
       profile_details(profile);
       follow_actions(profile);
+      display_posts(profile);
     });
 }
 
@@ -86,4 +87,12 @@ function follow_actions(profile) {
         check_follow(profile);
       });
   }
+}
+
+function display_posts(profile) {
+  fetch(`/get_post/${profile.username}`)
+    .then((response) => response.json())
+    .then((posts) => {
+      console.log(posts);
+    });
 }
