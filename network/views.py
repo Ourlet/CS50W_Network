@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
 from django.core.paginator import Paginator
 from django.db.models import Count
+from django.core import serializers
 
 
 from .models import Follower, Post, User, Like
@@ -192,24 +193,21 @@ def update_profile(request, profile):
 
 
 @ csrf_exempt
-def get_post(request, profile=None):
-    viewer = request.user
+def get_post(request, post_id):
 
-    if profile is None:
-        posts = Post.objects.all()
+    try:
+        post = Post.objects.get(pk=post_id)
+        print(post)
+        post_liked = Post.objects.annotate(num_likes=Count(
+            'liked')).order_by(
+            '-creation_date').filter(pk=post_id).values()
+        print(post_liked)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
 
-    else:
-        poster = get_object_or_404(User, username=profile)
-        posts = list(Post.objects.filter(poster=poster))
-        print(posts)
-
-    serialized_profilePosts = serialize("json", posts)
-    serialized_profilePosts = json.loads(serialized_profilePosts)
-    print(serialized_profilePosts)
-
-    return JsonResponse({
-        "posts": serialized_profilePosts,
-    }, safe=False, status=201)
+    # Return email contents
+    if request.method == "GET":
+        return JsonResponse(post.serialize())
 
 
 @ csrf_exempt

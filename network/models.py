@@ -10,13 +10,21 @@ class User(AbstractUser):
 
 class Post(models.Model):
     poster = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="poster")
+        User, on_delete=models.PROTECT, related_name="poster")
     content = models.TextField()
     creation_date = models.DateTimeField(auto_now=False, auto_now_add=True)
     modification_date = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
         return f"{self.id} : {self.content} writen by {self.poster} on {self.creation_date}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "poster": self.poster.username,
+            "content": self.content,
+            "creation_date": self.creation_date
+        }
 
 
 class Like(models.Model):
@@ -28,6 +36,14 @@ class Like(models.Model):
 
     def __str__(self):
         return f"{self.id} : {self.liked} liked by {self.liker}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "liker": self.liker.username,
+            "liked": self.liker.username,
+            "like_date": self.like_date
+        }
 
 
 class Follower(models.Model):
